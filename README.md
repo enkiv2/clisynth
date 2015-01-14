@@ -7,7 +7,8 @@ Requirements:
 
 How to use:
 
- . ./clisynth.sh
-
- nhelp
+```
+. ./clisynth.sh
+nhelp
+```
 
