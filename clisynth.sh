@@ -90,3 +90,7 @@ nqos () {
 		nqo $i;
 	done
 }
+
+sfilter() {
+	sox -p -p $@
+}
