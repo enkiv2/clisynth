@@ -52,7 +52,11 @@ nhelp () {
 	esac
 }
 synth () { 
-	sox -n -p synth $1 $mod $2
+	if echo $2 | grep -q '^R' ; then
+		sox -n -p synth $1 whitenoise gain -n -100
+	else
+		sox -n -p synth $1 $mod $2
+	fi
 }
 
 ns () {
