@@ -10,7 +10,7 @@ for i in 1 2 3 ; do
 	for j in 1 2 3 ; do
 		sox --combine merge $i.wav $j.wav ${i}-${j}.wav
 		for k in 1 2 3 ; do
-			sox --combine mix ${i}-${j}.wav $k.wav ${i}-${j}-${k}.wav
+			sox --combine mix-power ${i}-${j}.wav $k.wav ${i}-${j}-${k}.wav
 		done
 	done
 done
