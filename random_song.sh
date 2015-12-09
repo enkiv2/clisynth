@@ -4,6 +4,9 @@
 
 source clisynth.sh
 for i in 1 2 3 ; do
+	export mod=$(echo -e "sine\nsquare\ntriangle\nsawtooth\npluck" | shuf -n 1)
+	export o=$((RANDOM%9))
+	echo "$mod $o"
 	neos $(./randomMelody.py | tee /dev/stderr ) | sox -p $i.wav
 done
 for i in 1 2 3 ; do
