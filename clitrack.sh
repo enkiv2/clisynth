@@ -2,9 +2,10 @@
 
 helpstring="
  FORMAT:
- one track per line, two tab-separated columns
+ one track per line, three tab-separated columns
  First column: mod
- Second column: space-separated notes
+ Second column: octave
+ Third column: space-separated notes
 
  Usage:
  ./clitrack.sh [neos|nsos|nqos] output.wav < input.txt
@@ -29,7 +30,8 @@ components=""
 while read -r x ; do
 	components="$components $i.wav"
 	mod=$(echo $x | cut -f 1)
-	$notecmd `echo $x | cut -f 2-` | sox -p $i.wav
+	o=$(echo $x | cut -f 2)
+	$notecmd `echo $x | cut -f 3-` | sox -p $i.wav
 	i=$((i+1))
 done
 
