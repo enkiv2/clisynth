@@ -1,5 +1,23 @@
 #!/usr/bin/env zsh
 
+helpstring="
+ FORMAT:
+ one track per line, two tab-separated columns
+ First column: mod
+ Second column: space-separated notes
+
+ Usage:
+ ./clitrack.sh [neos|nsos|nqos] output.wav < input.txt
+"
+
+case $1 in
+	neos)  ;;
+	nsos)  ;;
+	nqos)  ;;
+	*) echo "$helpstring" ; return 1 ;;
+esac
+
+
 source ./clisynth.sh
 
 
