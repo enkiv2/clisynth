@@ -28,11 +28,11 @@ out=$2
 
 i=0
 components=""
-while read -r x ; do
+sed 's/#.*$//' | grep . | while read -r x ; do
 	components="$components $i.wav"
-	mod=$(echo $x | cut -f 1)
-	o=$(echo $x | cut -f 2)
-	channel=$(echo $x | cut -f 3)
+	mod=$(echo $x | cut -f 1 | tr -d ' ')
+	o=$(echo $x | cut -f 2 | tr -d ' ')
+	channel=$(echo $x | cut -f 3 | sed 's/  */ /g;s/ $//;s/^ //')
 	$notecmd `echo $x | cut -f 4-` | sox -p  $i.wav channels 2 remix 1 $channel
 	i=$((i+1))
 done
