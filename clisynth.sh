@@ -70,12 +70,15 @@ nq () {
 }
 
 nso () { 
+	echo "$1" | grep -q '^%' && ns "$1" || 
 	ns $1$o
 }
 neo () { 
+	echo "$1" | grep -q '^%' && ne "$1" || 
 	ne $1$o
 }
 nqo () { 
+	echo "$1" | grep -q '^%' && nq "$1" || 
 	nq $1$o
 }
 
