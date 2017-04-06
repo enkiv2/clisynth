@@ -93,7 +93,7 @@ def progression(root, firstMajor, secondMajor, delta):
 	return [m, m2]
 
 def randomNote():
-	return (random.choice(notesL), random.choice(range(0, 8)))
+	return (random.choice(notesL), random.choice(range(1, 8)))
 def randomProgression():
 	return progression(randomNote(), random.choice([True, False]), random.choice([True, False]), random.choice(range(0, 12)))
 
@@ -132,5 +132,5 @@ def generate(length, tempo, sectionCount, repeats, instrument):
 		ticks+=melodyNoteCount
 	printRoll(instrument)
 	
-generate(random.choice(range(1, 5))*8*60+random.choice(range(0, 60)), random.choice(range(1, 8)), random.choice(range(2, 8)), random.choice(range(1, 4)), random.choice(["sine", "pluck", "sawtooth"]))
+generate(random.choice(range(1, 5))*8*60+random.choice(range(0, 60)), random.choice(range(1, 8)), random.choice(range(2, 8)), random.choice(range(1, 4)), random.choice(["sine", "sawtooth"]*4+["pluck"]))
 
