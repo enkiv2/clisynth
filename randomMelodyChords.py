@@ -16,7 +16,7 @@ def chars(s):
 notes="CdDeEFgGaAbB"
 minorNotes="degab"
 notesL=chars(notes)
-
+instruments=["sine", "square", "triangle", "sawtooth", "trapezium", "pluck", "exp", "pinknoise", "whitenoise", "brownnoise"]
 roll={}
 
 def convertNote(note, octave):
@@ -92,10 +92,21 @@ def progression(root, firstMajor, secondMajor, delta):
 		m2=minor(*newRoot)
 	return [m, m2]
 
+def melancholyProgression(root):
+	m=major(*position(root[0], root[1], 12))
+	m2r=position(root[0], root[1], 4)
+	m2=[(m[0][0], m[0][1]-1), m[1], m[2]]
+	m.append(root)
+	m2.append(m2r)
+	return [m, m2]
+
 def randomNote():
 	return (random.choice(notesL), random.choice(range(1, 8)))
 def randomProgression():
-	return progression(randomNote(), random.choice([True, False]), random.choice([True, False]), random.choice(range(0, 12)))
+	return random.choice([
+		progression(randomNote(), random.choice([True, False]), random.choice([True, False]), random.choice(range(0, 12))),
+		melancholyProgression(randomNote())
+		])
 
 def randomSeq(length):
 	ret=[]
@@ -109,12 +120,15 @@ def randomSequences(length, count):
 		ret.append(randomSeq(length))
 	return ret
 
-def generate(length, tempo, sectionCount, repeats, instrument):
+def generate(length, tempo, sectionCount, repeats):
+	global roll
+	roll={}
 	noteCount=length/tempo
 	
 	progressionTempoModifier=random.choice([1, 2, 4])
 	progressionNoteCount=noteCount/(progressionTempoModifier*2)
 	addChordsToRoll(randomProgression()*progressionNoteCount, 0, progressionTempoModifier)
+	printRoll(random.choice(instruments))
 	
 	melodyTempoModifier=random.choice([1, 2, 4])
 	melodyNoteCount=noteCount/melodyTempoModifier
@@ -128,9 +142,10 @@ def generate(length, tempo, sectionCount, repeats, instrument):
 		motifPool.append(motif)
 	ticks=0
 	for i in range(0, len(motifPool)):
+		roll={}
 		addChordsToRoll(random.choice(motifPool), ticks, melodyTempoModifier)
 		ticks+=melodyNoteCount
-	printRoll(instrument)
-	
-generate(random.choice(range(1, 5))*8*60+random.choice(range(0, 60)), random.choice(range(1, 8)), random.choice(range(2, 8)), random.choice(range(1, 4)), random.choice(["sine", "sawtooth"]*4+["pluck"]))
+		printRoll(random.choice(instruments))
+for i in range(0, random.choice(range(1, 4))):	
+	generate(random.choice(range(1, 5))*8*60+random.choice(range(0, 60)), random.choice(range(1, 8)), random.choice(range(2, 8)), random.choice(range(1, 4)))
 
