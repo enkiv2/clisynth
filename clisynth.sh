@@ -55,7 +55,7 @@ synth () {
 	if echo $2 | grep -q '^R' ; then
 		sox -n -p synth $1 whitenoise gain -n -100
 	else
-		sox -n -p synth $1 $mod $2
+		sox -n -p synth $1 $mod $2 || sox -n -p synth $1 whitenoise gain -n -100
 	fi
 }
 
