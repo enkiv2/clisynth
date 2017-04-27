@@ -50,7 +50,7 @@ sed 's/#.*$//' | grep . | while read -r x ; do
 	mod=$(echo $x | cut -f 1 | tr -d ' ')
 	o=$(echo $x | cut -f 2 | tr -d ' ')
 	channel=$(echo $x | cut -f 3 | sed 's/  */ /g;s/ $//;s/^ //')
-	$notecmd `echo $x | cut -f 4-` | sox -p  $i.$pid.wav channels 2 remix 1 $channel &
+	$notecmd `echo $x | cut -f 4-`  | sox -p  $i.$pid.wav channels 2 remix 1 $channel &
 	i=$((i+1))
 done
 
@@ -58,7 +58,7 @@ debugprint "Waiting for synthesis to finish..."
 wait
 debugprint "Mastering..."
 set -o SH_WORD_SPLIT
-sox -m $components $out
+sox -m $components -b 16 "$out"
 debugprint "Cleaning up..."
 rm -f $components
 debugprint "Done."
