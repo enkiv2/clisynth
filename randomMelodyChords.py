@@ -17,6 +17,7 @@ notes="CdDeEFgGaAbB"
 minorNotes="degab"
 notesL=chars(notes)
 instruments=["sine", "square", "triangle", "sawtooth", "trapezium", "pluck", "exp", "pinknoise", "whitenoise", "brownnoise"]
+melodicInstruments=["sine", "square", "triangle", "sawtooth", "trapezium", "pluck"]
 roll={}
 
 def convertNote(note, octave):
@@ -146,6 +147,37 @@ def generate(length, tempo, sectionCount, repeats):
 		addChordsToRoll(random.choice(motifPool), ticks, melodyTempoModifier)
 		ticks+=melodyNoteCount
 		printRoll(random.choice(instruments))
-for i in range(0, random.choice(range(1, 4))):	
-	generate(random.choice(range(1, 5))*8*60+random.choice(range(0, 60)), random.choice(range(1, 8)), random.choice(range(2, 8)), random.choice(range(1, 4)))
+def generate2(length, tempo, sectionCount, layers):
+	global roll
+	roll={}
+	noteCount=length/tempo
+	
+	progressionTempoModifier=random.choice([1, 2, 4])
+	progressionNoteCount=noteCount/(progressionTempoModifier*2)
+	addChordsToRoll(randomProgression()*progressionNoteCount, 0, progressionTempoModifier)
+	printRoll(random.choice(instruments))
+	
+	repeats=sectionCount
+	for i in range(0, sectionCount):
+		for j in range(0, sectionCount-i):
+			for k in range(0, i+1):
+				repeats+=1
+	for layer in range(0, layers):
+		melodyTempoModifier=random.choice([1, 2, 4])
+		melodyNoteCount=noteCount/melodyTempoModifier
+		#melodyNoteCount=melodyNoteCount/sectionCount
+		melodyNoteCount=melodyNoteCount/repeats
+		motifs=randomSequences(melodyNoteCount, sectionCount)
+		roll={}
+		ticks=0
+		for i in range(0, len(motifs)):
+			repeatCount=len(motifs)-i
+			for j in range(0, repeatCount):
+				for k in range(0, i+1):
+					addChordsToRoll(motifs[k], ticks, melodyTempoModifier)
+					ticks+=(melodyNoteCount*melodyTempoModifier)
+			addChordsToRoll(motifs[i], ticks, melodyTempoModifier)
+			ticks+=(melodyNoteCount*melodyTempoModifier)
+		printRoll(random.choice(instruments))
+generate2(random.choice(range(2, 10))*8*60+random.choice(range(0, 60)), random.choice(range(1,8)), random.choice(range(3, 5)), random.choice(range(1, 8)))
 
