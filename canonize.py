@@ -16,14 +16,23 @@ def reduce(x, y):
 		return [x, y]
 	else:
 		return [x/d, y/d]
-def shiftNotes(n, step):
+def convertNote(note, octave):
+	octaveOffset=octave+1
+	semitoneOffset=octaveOffset*12
+	semitoneOffset+="CdDeEFgGaAbB".find(note)
+	return "%"+str(69-semitoneOffset)
+def shiftNotesCents(n, step, octave):
 	ret=[]
 	for note in n:
-		if(note[0]=="%"):
-			ret.append("%"+str(int(note[1:])+(12*step)))
-		else:
+		if(note=="R"):
 			ret.append(note)
+		else:
+			if(note[0]!="%"):
+				note=convertNote(note, octave)
+			ret.append("%"+str(int(note[1:])+step))
 	return ret
+def shiftNotes(n, step, octave):
+	return shiftNotesCents(n, 12*step)
 notes=[]
 mode=sys.argv[1]
 notes=sys.argv[2].split()
@@ -39,7 +48,7 @@ if mode=="round":
 			row+=(" ".join(["R"]*len(notes)))
 			row+=" "
 		for j in range(i, voices+1):
-			row+=(" ".join(shiftNotes(notes, i*step)))+" "
+			row+=(" ".join(shiftNotes(notes, i*step, start_octave)))+" "
 		rows.append(row)
 	for r in rows:
 		print(instrument+"\t"+r)
@@ -58,7 +67,23 @@ elif mode=="prolation":
 			for note in notes:
 				seq.extend([note]*x[i])
 		if(i>0):
-			seq=shiftNotes(seq, step)
+			seq=shiftNotes(seq, step, start_octave)
 		print(row+"\t"+(" ".join(seq)))
-
+elif mode=="crab":
+	start_octave=int(sys.argv[3])
+	step=int(sys.argv[4])
+	print("\t".join([instrument, str(start_octave), "1", " ".join(notes)]))
+	notes.reverse()
+	print("\t".join([instrument, str(start_octave+step), "2", " ".join(notes)]))
+elif mode=="mirror":
+	start_octave=int(sys.argv[3])
+	step=int(sys.argv[4])
+	print("\t".join([instrument, str(start_octave), "1", " ".join(notes)]))
+	print("\t".join([instrument, str(start_octave+step), "2", " ".join(shiftNotesCents(notes, -7, start_octave+step))]))
+elif mode=="table":
+	start_octave=int(sys.argv[3])
+	step=int(sys.argv[4])
+	print("\t".join([instrument, str(start_octave), "1", " ".join(notes)]))
+	notes.reverse()
+	print("\t".join([instrument, str(start_octave+step), "2", " ".join(shiftNotesCents(notes, -7, start_octave+step))]))
 
