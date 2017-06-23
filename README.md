@@ -1,7 +1,7 @@
 # clisynth
 A set of shell functions and command line tools for command line music composition and synthesis
 
-This repository contains several distinct programs related to command line music composition.
+This repository contains several distinct programs related to command line music composition. Each uses simple, text-based formats and avoids large or unusual dependencies. The goal is to be a suite of tools for music composition & production that can be used without a GUI, soundfonts, specialized hardware, or complicated external libraries, accessible to programmers who are not accustomed to musical notation, with hackable tools & generators that present an introduction to ideas from music theory in a way that caters to a programmer mindset.
 
 ## clisynth.sh
 
