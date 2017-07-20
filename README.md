@@ -76,3 +76,11 @@ hockit.py - given a melody and a sequence of instrument-octave pairs, create a h
 ./hockit.py "F E F D E C D D R F F G F E D C E F E D R" 3 sine 1 pluck 2 sawtooth 3
 ```
 
+arpeggiate.py - given a tracker file as stdin, add cascading rests so that all chords become separate notes
+```
+echo "sine	5	1	A B C D E F G\npluck	4	2	G F E D C B A" > sample.tsv
+./arpeggiate.py < sample.tsv
+# Yields the following:
+# sine	5	1	A R B R C R D R E R F R G R
+# pluck	4	2	R G R F R E R D R C R B R A R
+```
