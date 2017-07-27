@@ -32,7 +32,7 @@ def shiftNotesCents(n, step, octave):
 			ret.append("%"+str(int(note[1:])+step))
 	return ret
 def shiftNotes(n, step, octave):
-	return shiftNotesCents(n, 12*step)
+	return shiftNotesCents(n, 12*step, octave)
 notes=[]
 mode=sys.argv[1]
 notes=sys.argv[2].split()
