@@ -2,7 +2,7 @@
 dit="B"
 daw="C"
 gain=-23
-tempo=8.0
+tempo=0.05
 octave=3
 
 showNotes=1
@@ -20,7 +20,7 @@ paramDesc=(
 	"Synthesize dit as the provided note"
 	"Synthesize daw as the provided note"
 	"Set the gain"
-	"Set the number of units per second"
+	"Set the length of a unit in seconds"
 	"Set the octave"
 )
 
@@ -111,8 +111,8 @@ morse |
 			figprint $(echo $x | tr "R$dit$daw" ' .-' )
 			units=1.0
 			[[ $x -eq $daw ]] && units=3.0
-			synth $((units/tempo)) $x$octave
+			synth $((units*tempo)) $x$octave
 			figprint ""
-			synth $((1.0/tempo)) R0
+			synth $((1.0*tempo)) R0
 		done | play -p $playopts gain $gain
 
