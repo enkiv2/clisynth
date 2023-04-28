@@ -104,8 +104,9 @@ done
 
 morse | 
 	sed 's/dit/'"$dit"'/g;s/daw/'"$daw"'/g' | # dit & daw become notes
-	tr '\n' 'R' | sed 's/\([A-Z]\)R/\1 R/g;s/RR/R R/g' | # newlines become rests
-	tr ' ' '\n' | # prepare for synthesis
+	sed 's/^$/ R R R R /' | # a blank line represents a word break, which should have a total of seven units of rest; these are the four that are not covered later
+	sed 's/$/ R R /' | # there should be a total of three units of rest between letters (these two plus the one at the end of the loop)
+	tr ' ' '\n' | grep . | # prepare for synthesis
 		while read x ; do
 			figprint $(echo $x | tr "R$dit$daw" ' .-' )
 			units=1.0
