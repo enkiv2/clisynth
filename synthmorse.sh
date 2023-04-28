@@ -13,42 +13,27 @@ figopts=""
 
 . ./clisynth.sh
 
-function flush() {
-	python -c "import sys; sys.stdout.flush(); sys.stderr.flush()"
-}
 function dprint() {
-	stdbuf -o0 -e0 zsh -c "printf '"$@"' > /dev/stderr"
-	flush
+	printf "$@" > /dev/stderr
 }
 function figprint() {
 	if [[ "$showNotes" == "1" ]] ; then
 		clear
-		printf "$@" | figlet -w $cols -f $figfont $figopts
+		[[ -z "$@" ]] ||
+			(printf "$@" | figlet -w $cols -f $figfont $figopts)
 	fi > /dev/stderr
 }
 
 while [[ "$#" -gt 0 ]] ; do
 	opt=$1 ; shift
 	case $opt in
-		-dit)
-			dit=$1 ; shift
-			break
-		;;
-		-daw)
-			daw=$1 ; shift
-			break
-		;;
-		-gain)
-			gain=$1 ; shift
-			break
+		-(dit|daw|gain|octave))
+			export $opt=$1
+			shift ; break
 		;;
 		-tempo)
 			tempo=$1 ; shift
 			echo $tempo | grep -q '\.' || { tempo=${tempo}.0 } # tempo must have a decimal component or else we get 0-length notes
-			break
-		;;
-		-octave)
-			octave=$1 ; shift
 			break
 		;;
 		-h|-help)
