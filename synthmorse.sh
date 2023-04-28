@@ -20,7 +20,7 @@ paramDesc=(
 	"Synthesize dit as the provided note"
 	"Synthesize daw as the provided note"
 	"Set the gain"
-	"Set the number of notes per beat"
+	"Set the number of units per second"
 	"Set the octave"
 )
 
@@ -107,8 +107,11 @@ morse |
 	tr '\n' 'R' | sed 's/\([A-Z]\)R/\1 R/g;s/RR/R R/g' | # newlines become rests
 	tr ' ' '\n' | # prepare for synthesis
 		while read x ; do
-			figprint $(echo $x | tr "R$dit$daw" ' _#' )
-			synth $((rat/tempo)) $x$octave
+			figprint $(echo $x | tr "R$dit$daw" ' .-' )
+			units=1.0
+			[[ $x -eq $daw ]] && units=3.0
+			synth $((units/tempo)) $x$octave
 			figprint ""
+			synth $((1.0/tempo)) R0
 		done | play -p $playopts gain $gain
 
